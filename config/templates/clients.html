@@ -1,24 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Клиенты</h2>
-<table class="table table-bordered table-striped">
-<thead class="table-dark">
-<tr>
-    <th>ID</th>
-    <th>Имя</th>
-    <th>Email</th>
-    <th>Телефон</th>
-</tr>
-</thead>
-<tbody>
-{% for client in clients %}
-<tr>
-    <td>{{ client.id }}</td>
-    <td>{{ client.first_name }} {{ client.last_name }}</td>
-    <td>{{ client.email }}</td>
-    <td>{{ client.phone }}</td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark">Кардарлар базасы</h2>
+    <a href="{% url 'client_create' %}" class="btn btn-primary shadow-sm"><i class="bi bi-person-plus me-2"></i>Жаңы кардар</a>
+</div>
+
+<div class="row">
+    {% for client in clients %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100 p-3">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-weight: bold; font-size: 20px;">
+                        {{ client.first_name|first }}{{ client.last_name|first }}
+                    </div>
+                    <div>
+                        <h5 class="card-title mb-0 fw-bold">{{ client.first_name }} {{ client.last_name }}</h5>
+                        <small class="text-muted">ID: #{{ client.id }}</small>
+                    </div>
+                </div>
+                <p class="card-text mb-2"><i class="bi bi-telephone text-success me-2"></i>{{ client.phone }}</p>
+                <p class="card-text mb-4 text-truncate"><i class="bi bi-envelope text-info me-2"></i>{{ client.email|default:"Email жок" }}</p>
+                <div class="d-flex gap-2">
+                    <a href="tel:{{ client.phone }}" class="btn btn-outline-success btn-sm w-100">Чалуу</a>
+                    <a href="{% url 'client_detail' client.id %}" class="btn btn-outline-primary btn-sm w-100">Профиль</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

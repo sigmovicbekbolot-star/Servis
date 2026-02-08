@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5 text-center">
+                    <div class="mb-4">
+                        <i class="bi bi-exclamation-triangle text-danger" style="font-size: 4rem;"></i>
+                    </div>
+                    
+                    <h2 class="fw-bold mb-3">Заказды өчүрүү</h2>
+                    <p class="text-muted mb-4">
+                        Сиз чын эле <span class="badge bg-light text-dark fs-6">{{ order }}</span> деген заказды өчүрүүнү каалайсызбы? Бул аракетти артка кайтарууга болбойт.
+                    </p>
+
+                    <form method="post" class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-lg px-4 rounded-pill shadow-sm">
+                            <i class="bi bi-trash"></i> Ооба, өчүрөм
+                        </button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-lg px-4 rounded-pill shadow-sm">
+                            <i class="bi bi-arrow-left"></i> Жок, артка
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

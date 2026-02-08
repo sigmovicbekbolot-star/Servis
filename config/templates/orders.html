@@ -1,46 +1,89 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Заказы</h2>
-<table class="table table-striped table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Дата</th>
-            <th>Время</th>
-            <th>Статус</th>
-            <th>Комментарий</th>
-            <th>Пользователь</th>
-            <th>Услуга</th>
-            <th>Имарат</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for order in orders %}
-        <tr>
-            <td>{{ order.id }}</td>
-            <td>{{ order.date }}</td>
-            <td>{{ order.time }}</td>
-            <td>
-                {% if order.status == 'NEW' %}
-                    Новый
-                {% elif order.status == 'IN_PROGRESS' %}
-                    В процессе
-                {% elif order.status == 'DONE' %}
-                    Выполнено
-                {% endif %}
-            </td>
-            <td>{{ order.comment }}</td>
-            <td>{{ order.user.get_full_name }}</td>
-            <td>{{ order.service.name }}</td>
-            <td>
-                {% if order.building %}
-                    {{ order.building.name }}
-                {% else %}
-                    —
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="min-h-screen bg-slate-50 py-10 px-4">
+    <div class="max-w-6xl mx-auto">
+
+        <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
+            <div>
+                <h2 class="text-3xl font-black text-slate-900 flex items-center gap-3">
+                    <i class="fa-solid fa-clipboard-list text-blue-600"></i>
+                    Заказдар панели
+                </h2>
+                <p class="text-slate-500 font-medium mt-1">Бардык заказдарыңыздын абалын ушул жерден көзөмөлдөңүз</p>
+            </div>
+            <a href="{% url 'create_order' %}" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black shadow-xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i> Жаңы заказ түзүү
+            </a>
+        </div>
+
+        <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50/50 border-b border-slate-100">
+                            <th class="px-8 py-6 text-xs font-black uppercase tracking-widest text-slate-400">ID</th>
+                            <th class="px-8 py-6 text-xs font-black uppercase tracking-widest text-slate-400">Имарат / Кызмат</th>
+                            <th class="px-8 py-6 text-xs font-black uppercase tracking-widest text-slate-400">Статус</th>
+                            <th class="px-8 py-6 text-xs font-black uppercase tracking-widest text-slate-400 text-right">Аракеттер</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        {% for order in orders %}
+                        <tr class="hover:bg-slate-50/50 transition-colors group">
+                            <td class="px-8 py-6 font-bold text-slate-400">#{{ order.id }}</td>
+                            <td class="px-8 py-6">
+                                <div class="flex flex-col">
+                                    <span class="font-black text-slate-900 text-lg flex items-center gap-2">
+                                        <i class="fa-solid fa-building text-blue-500 text-sm"></i>
+                                        {{ order.building.name }}
+                                    </span>
+                                    <span class="text-slate-500 font-medium text-sm mt-1">
+                                        {{ order.service.name }}
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6">
+                                {% if order.status == 'NEW' %}
+                                    <span class="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-orange-50 text-orange-600 text-xs font-black border border-orange-100 uppercase">
+                                        <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span> Жаңы
+                                    </span>
+                                {% elif order.status == 'COMPLETED' %}
+                                    <span class="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-green-50 text-green-600 text-xs font-black border border-green-100 uppercase">
+                                        <i class="fa-solid fa-check"></i> Бүттү
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-blue-50 text-blue-600 text-xs font-black border border-blue-100 uppercase">
+                                        {{ order.status }}
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td class="px-8 py-6 text-right">
+                                <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <a href="{% url 'order_detail' order.id %}" class="w-10 h-10 flex items-center justify-center bg-slate-100 text-slate-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'order_edit' order.id %}" class="w-10 h-10 flex items-center justify-center bg-slate-100 text-slate-600 rounded-xl hover:bg-orange-500 hover:text-white transition-all shadow-sm">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <a href="{% url 'order_delete' order.id %}" class="w-10 h-10 flex items-center justify-center bg-slate-100 text-slate-600 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-sm">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="px-8 py-20 text-center text-slate-400 font-bold italic">
+                                <i class="fa-solid fa-inbox text-4xl mb-4 block"></i>
+                                Азырынча заказдар жок...
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Жаңы кардар кошуу{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h3 class="mb-0 fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Жаңы кардар</h3>
+                    <p class="mb-0 opacity-75 small">Кардардын маалыматтарын толтуруңуз</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Аты (First Name)</label>
+                            <input type="text" name="first_name" class="form-control rounded-3" placeholder="Мисалы: Наргиза" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Фамилиясы (Last Name)</label>
+                            <input type="text" name="last_name" class="form-control rounded-3" placeholder="Мисалы: Тилебалдиева" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Телефон номери</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-telephone"></i></span>
+                                <input type="text" name="phone" class="form-control rounded-end-3" placeholder="0505 48 78 90" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Электрондук почта</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                                <input type="email" name="email" class="form-control rounded-end-3" placeholder="example@mail.com">
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+                                <i class="bi bi-check-circle-fill me-2"></i>Сактоо
+                            </button>
+                            <a href="{% url 'clients' %}" class="btn btn-light rounded-pill border">Артка кайтуу</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

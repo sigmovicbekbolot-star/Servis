@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4 mb-4 rounded-4">
+                <h2 class="fw-bold">{{ service.name }}</h2>
+                <div class="d-flex align-items-center mb-3">
+                    <span class="text-warning fs-4">★ {{ service.get_average_rating|stringformat:".1f" }}</span>
+                    <span class="ms-3 text-muted">({{ reviews.count }} пикир)</span>
+                </div>
+                <h4 class="text-primary">{{ service.price }} сом</h4>
+                <p class="mt-3 text-secondary">{{ service.description }}</p>
+                <a href="{% url 'create_order' %}?service={{ service.id }}" class="btn btn-success btn-lg mt-3 w-100">Заказ берүү</a>
+            </div>
+
+            <div class="card shadow-sm p-4 rounded-4">
+                <h4 class="mb-4">Кардарлардын пикири</h4>
+                {% for review in reviews %}
+                <div class="border-bottom mb-3 pb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>{{ review.user.username }}</strong>
+                        <span class="text-warning">{% for i in "12345" %}{% if forloop.counter <= review.rating %}★{% endif %}{% endfor %}</span>
+                    </div>
+                    <p class="mb-1 text-dark">{{ review.comment }}</p>
+                    <small class="text-muted">{{ review.created_at|date:"d.m.Y" }}</small>
+                </div>
+                {% empty %}
+                <div class="text-center py-4">
+                    <p class="text-muted">Азырынча пикир жок. Биринчи болуп жазыңыз!</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 rounded-4 sticky-top" style="top: 20px;">
+                <h5 class="mb-3 text-center">Отзыв калтыруу</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Рейтинг (1-5)</label>
+                        <select name="rating" class="form-select" required>
+                            <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                            <option value="4">⭐⭐⭐⭐ (4)</option>
+                            <option value="3">⭐⭐⭐ (3)</option>
+                            <option value="2">⭐⭐ (2)</option>
+                            <option value="1">⭐ (1)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Сиздин пикириңиз</label>
+                        <textarea name="comment" class="form-control" rows="4" placeholder="Кызмат жактыбы?..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Жөнөтүү</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

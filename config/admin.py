@@ -1,18 +1,11 @@
-# admin.py
-
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User
+from .models import User, Building, Service, Order, OrderHistory, Client, Category, Review
 
-class UserAdmin(BaseUserAdmin):
-    # Формада көрүнө турган талаалар
-    fieldsets = (
-        (None, {'fields': ('username', 'email', 'first_name', 'last_name', 'phone', 'role', 'managed_building')}),
-    )
 
-    # Көрүнө турган талаалар тизмеси (лист view)
-    list_display = ('username', 'email', 'first_name', 'last_name', 'phone', 'role')
-    search_fields = ('username', 'email', 'first_name', 'last_name')
-    ordering = ('username',)
-
-admin.site.register(User, UserAdmin)
+admin.site.register(Review)
+admin.site.register(Category)
+admin.site.register(Building)
+admin.site.register(Service)
+admin.site.register(Order)
+admin.site.register(OrderHistory)
+admin.site.register(Client)

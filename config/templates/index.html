@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Service.kg</title>
+    <style>
+        /* БУЛ СТИЛДЕР ИНТЕРНЕТ ЖОК БОЛСО ДА ИШТЕЙТ */
+        body { background: #f0f2f5; font-family: sans-serif; margin: 0; padding: 0; color: #333; }
+
+        /* Navbar */
+        .navbar { background: #1a202c; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: bold; color: white; text-decoration: none; }
+        .logo span { color: #f6993f; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+
+        /* Hero */
+        .hero { background: #2d3748; color: white; padding: 50px; text-align: center; }
+        .search-box { margin-top: 20px; }
+        .search-box input { padding: 12px; width: 300px; border-radius: 5px; border: none; }
+        .search-box button { padding: 12px 25px; background: #f6993f; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        /* КАТЕГОРИЯЛАР */
+        .cats { display: flex; justify-content: center; gap: 10px; padding: 20px; }
+        .cat-btn { background: white; border: 1px solid #ccc; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
+
+        /* КАРТОЧКАЛАР - GRID БҮЛҮМҮ */
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .grid {
+            display: block; /* Эгер Grid иштебесе */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            width: 280px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: inline-block; /* Эски браузерлер үчүн */
+            vertical-align: top;
+        }
+
+        .card-img { height: 180px; background: #ddd; text-align: center; line-height: 180px; font-size: 50px; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        .card-body { padding: 20px; }
+        .card-title { font-size: 20px; margin: 0 0 10px 0; font-weight: bold; }
+        .card-text { font-size: 14px; color: #666; height: 40px; overflow: hidden; }
+
+        .card-footer { padding: 15px 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .price { font-size: 18px; font-weight: bold; color: #3490dc; }
+        .btn { background: #3490dc; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="/" class="logo">Service<span>.kg</span></a>
+        <div class="nav-links">
+            <a href="/">Башкы бет</a>
+            <a href="#">Заказдарым</a>
+        </div>
+    </div>
+
+    <div class="hero">
+        <h1>Кандай кызмат керек?</h1>
+        <div class="search-box">
+            <input type="text" placeholder="Издөө...">
+            <button>Издөө</button>
+        </div>
+    </div>
+
+    <div class="cats">
+        <button class="cat-btn">Баары</button>
+        <button class="cat-btn">Жер үйлөр</button>
+        <button class="cat-btn">Көп кабаттуулар</button>
+    </div>
+
+    <div class="container">
+        <div class="grid">
+            {% for service in services %}
+            <div class="card">
+                <div class="card-img">
+                    {% if service.image %}
+                        <img src="{{ service.image.url }}">
+                    {% else %}
+                        🛠️
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="card-title">{{ service.name }}</div>
+                    <div class="card-text">{{ service.description }}</div>
+                </div>
+                <div class="card-footer">
+                    <span class="price">{{ service.price }} с.</span>
+                    <a href="#" class="btn">Тандоо</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,24 +1,21 @@
 {% extends 'base.html' %}
+{% block title %}Имараттар{% endblock %}
+
 {% block content %}
-<h2>Имараты</h2>
-<table class="table table-bordered table-striped">
-<thead class="table-dark">
-<tr>
-    <th>ID</th>
-    <th>Название</th>
-    <th>Адрес</th>
-    <th>Описание</th>
-</tr>
-</thead>
-<tbody>
-{% for building in buildings %}
-<tr>
-    <td>{{ building.id }}</td>
-    <td>{{ building.name }}</td>
-    <td>{{ building.address }}</td>
-    <td>{{ building.description }}</td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
+<h1>Имараттар</h1>
+<ul id="buildings-list" class="list-group"></ul>
+
+<script>
+fetch("/api/buildings/")
+.then(res => res.json())
+.then(data => {
+    const list = document.getElementById("buildings-list");
+    data.forEach(building => {
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.textContent = building.name + " - " + building.address;
+        list.appendChild(li);
+    });
+});
+</script>
 {% endblock %}
